@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cafe Chooser</title>
+</head>
+<body>
+    <h1>Add a Cafe:</h1>
+    <form action="{{url_for('index')}}" method="POST">
+        <label for="cafe_name">Cafe Name:</label>
+        <input type="text" id="cafe_name" name="cafe_name" required>
+        <label for="cafe_url">Cafe Google Maps URL:</label>
+        <input type="url" id="cafe_url" name="cafe_url" required>
+        <button type="submit">Add Cafe</button>
+    </form>
+
+    <h1>Randomly Chosen Cafe:</h1>
+    <form action="{{url_for('get_random_cafe')}}" method="POST">
+        <button type="submit">Get Random Cafe</button>
+    </form>
+    {% if selected_cafe %}
+        <h2>{{selected_cafe['name']}}</h2>
+    {% else %}
+        <h2>No cafes available</h2>
+    {% endif %}
+
+    <h1>All Cafes:</h1>
+    <ul>
+        {% for cafe in cafes %}
+            <li>
+                <a href="{{cafe['url']}}" target="_blank">{{cafe['name']}}</a>
+                <form action="{{url_for('update_cafe_route', cafe_id=cafe['id'])}}" method="POST" style="display:inline;">
+                    <input type="hidden" name="cafe_name" value="{{cafe['name']}}">
+                    <input type="hidden" name="cafe_url" value="{{cafe['url']}}">
+                    <button type="submit">Edit</button>
+                </form>
+                <form action="{{url_for('delete_cafe_route', cafe_id=cafe['id'])}}" method="POST" style="display:inline;">
+                    <button type="submit">Delete</button>
+                </form>
+                {% if not cafe['visited_this_week'] %}
+                    <form action="{{url_for('mark_visited_route', cafe_id=cafe['id'])}}" method="POST" style="display:inline;">
+                        <button type="submit">Mark as Visited This Week</button>
+                    </form>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

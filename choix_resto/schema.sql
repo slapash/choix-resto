@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS cafes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    url TEXT NOT NULL,
+    last_visited TIMESTAMP
+);
